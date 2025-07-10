@@ -1,0 +1,17 @@
+.{
+    .name = .emsdk,
+    .version = "0.0.1",
+    .minimum_zig_version = "0.14.1",
+    .paths = .{
+        "src",
+        "build.zig",
+        "build.zig.zon",
+    },
+    .fingerprint = 0xd3fae084502e323e,
+    .dependencies = .{
+        .emsdk = .{
+            .url = "git+https://github.com/emscripten-core/emsdk?ref=4.0.10#62a853cd3b3134398ce85cde8bb5cbb2ef0194cb",
+            .hash = "N-V-__8AAEWFDwBdd7oE1EcCE3lK2y01-2ourXGKhpZeaZxQ",
+        },
+    },
+}

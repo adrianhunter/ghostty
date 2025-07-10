@@ -3325,6 +3325,7 @@ pub fn loadCliArgs(self: *Config, alloc_gpa: Allocator) !void {
 
         // Fast-path if we are Linux and have no args.
         .linux, .freebsd => if (std.os.argv.len <= 1) return,
+        .emscripten => return,
 
         // Everything else we have to at least try because it may
         // not use std.os.argv.

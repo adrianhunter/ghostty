@@ -183,29 +183,30 @@ pub const Path = union(enum) {
         var dir = try std.fs.openDirAbsolute(base, .{});
         defer dir.close();
 
-        const abs = dir.realpath(path, &buf) catch |err| abs: {
-            if (err == error.FileNotFound) {
-                // The file doesn't exist. Try to resolve the relative path
-                // another way.
-                const resolved = try std.fs.path.resolve(arena_alloc, &.{ base, path });
-                defer arena_alloc.free(resolved);
-                @memcpy(buf[0..resolved.len], resolved);
-                break :abs buf[0..resolved.len];
-            }
+        // const abs = dir.realpath(path, &buf) catch |err| abs: {
+        //     if (err == error.FileNotFound) {
+        //         // The file doesn't exist. Try to resolve the relative path
+        //         // another way.
 
-            try diags.append(arena_alloc, .{
-                .message = try std.fmt.allocPrintZ(
-                    arena_alloc,
-                    "error resolving file path {s}: {}",
-                    .{ path, err },
-                ),
-            });
+        //     }
 
-            // Blank this path so that we don't attempt to resolve it again
-            self.* = .{ .required = "" };
+        //     try diags.append(arena_alloc, .{
+        //         .message = try std.fmt.allocPrintZ(
+        //             arena_alloc,
+        //             "error resolving file path {s}: {}",
+        //             .{ path, err },
+        //         ),
+        //     });
 
-            return;
-        };
+        //     // Blank this path so that we don't attempt to resolve it again
+        //     self.* = .{ .required = "" };
+
+        //     return;
+        // };
+        const resolved = try std.fs.path.resolve(arena_alloc, &.{ base, path });
+        defer arena_alloc.free(resolved);
+        @memcpy(buf[0..resolved.len], resolved);
+        const abs = buf[0..resolved.len];
 
         log.debug(
             "expanding file path relative={s} abs={s}",

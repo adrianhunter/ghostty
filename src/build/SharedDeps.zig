@@ -72,11 +72,11 @@ fn initTarget(
     target: std.Build.ResolvedTarget,
 ) !void {
     // Update our metallib
-    self.metallib = .create(b, .{
-        .name = "Ghostty",
-        .target = target,
-        .sources = &.{b.path("src/renderer/shaders/shaders.metal")},
-    });
+    // self.metallib = .create(b, .{
+    //     .name = "Ghostty",
+    //     .target = target,
+    //     .sources = &.{b.path("src/renderer/shaders/shaders.metal")},
+    // });
 
     // Change our config
     const config = try b.allocator.create(Config);
@@ -132,6 +132,13 @@ pub fn add(
             }
         }
     }
+
+    const stuff = b.dependency("xev", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    step.root_module.addImport("xev", stuff.module("xev"));
 
     // Harfbuzz
     _ = b.systemIntegrationOption("harfbuzz", .{}); // Shows it in help
@@ -208,6 +215,12 @@ pub fn add(
             );
         }
     }
+    if (b.lazyDependency("ziglyph", .{
+        .target = target,
+        .optimize = optimize,
+    })) |dep| {
+        step.root_module.addImport("ziglyph", dep.module("ziglyph"));
+    }
 
     // Oniguruma
     if (b.lazyDependency("oniguruma", .{
@@ -229,24 +242,24 @@ pub fn add(
     }
 
     // Glslang
-    if (b.lazyDependency("glslang", .{
-        .target = target,
-        .optimize = optimize,
-    })) |glslang_dep| {
-        step.root_module.addImport("glslang", glslang_dep.module("glslang"));
-        if (b.systemIntegrationOption("glslang", .{})) {
-            step.linkSystemLibrary2("glslang", dynamic_link_opts);
-            step.linkSystemLibrary2(
-                "glslang-default-resource-limits",
-                dynamic_link_opts,
-            );
-        } else {
-            step.linkLibrary(glslang_dep.artifact("glslang"));
-            try static_libs.append(
-                glslang_dep.artifact("glslang").getEmittedBin(),
-            );
-        }
-    }
+    // if (b.lazyDependency("glslang", .{
+    //     .target = target,
+    //     .optimize = optimize,
+    // })) |glslang_dep| {
+    //     step.root_module.addImport("glslang", glslang_dep.module("glslang"));
+    //     if (b.systemIntegrationOption("glslang", .{})) {
+    //         step.linkSystemLibrary2("glslang", dynamic_link_opts);
+    //         step.linkSystemLibrary2(
+    //             "glslang-default-resource-limits",
+    //             dynamic_link_opts,
+    //         );
+    //     } else {
+    //         step.linkLibrary(glslang_dep.artifact("glslang"));
+    //         try static_libs.append(
+    //             glslang_dep.artifact("glslang").getEmittedBin(),
+    //         );
+    //     }
+    // }
 
     // Spirv-cross
     if (b.lazyDependency("spirv_cross", .{
@@ -385,11 +398,12 @@ pub fn add(
             .root_source_file = metallib.output,
         });
     }
+    // if () |dep| {
 
     // Other dependencies, mostly pure Zig
-    if (b.lazyDependency("opengl", .{})) |dep| {
-        step.root_module.addImport("opengl", dep.module("opengl"));
-    }
+    // if (b.lazyDependency("opengl", .{})) |dep| {
+    //     step.root_module.addImport("opengl", dep.module("opengl"));
+    // }
     if (b.lazyDependency("vaxis", .{})) |dep| {
         step.root_module.addImport("vaxis", dep.module("vaxis"));
     }
@@ -399,24 +413,16 @@ pub fn add(
     })) |dep| {
         step.root_module.addImport("wuffs", dep.module("wuffs"));
     }
-    if (b.lazyDependency("libxev", .{
-        .target = target,
-        .optimize = optimize,
-    })) |dep| {
-        step.root_module.addImport("xev", dep.module("xev"));
-    }
+
+    // if () |dep| {
+    // }
     if (b.lazyDependency("z2d", .{
         .target = target,
         .optimize = optimize,
     })) |dep| {
         step.root_module.addImport("z2d", dep.module("z2d"));
     }
-    if (b.lazyDependency("ziglyph", .{
-        .target = target,
-        .optimize = optimize,
-    })) |dep| {
-        step.root_module.addImport("ziglyph", dep.module("ziglyph"));
-    }
+
     if (b.lazyDependency("zf", .{
         .target = target,
         .optimize = optimize,
@@ -473,14 +479,14 @@ pub fn add(
     }
 
     // cimgui
-    if (b.lazyDependency("cimgui", .{
-        .target = target,
-        .optimize = optimize,
-    })) |cimgui_dep| {
-        step.root_module.addImport("cimgui", cimgui_dep.module("cimgui"));
-        step.linkLibrary(cimgui_dep.artifact("cimgui"));
-        try static_libs.append(cimgui_dep.artifact("cimgui").getEmittedBin());
-    }
+    // if (b.lazyDependency("cimgui", .{
+    //     .target = target,
+    //     .optimize = optimize,
+    // })) |cimgui_dep| {
+    //     step.root_module.addImport("cimgui", cimgui_dep.module("cimgui"));
+    //     step.linkLibrary(cimgui_dep.artifact("cimgui"));
+    //     try static_libs.append(cimgui_dep.artifact("cimgui").getEmittedBin());
+    // }
 
     // Highway
     if (b.lazyDependency("highway", .{

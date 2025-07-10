@@ -4,7 +4,7 @@ const build_config = @import("build_config.zig");
 const cli = @import("cli.zig");
 const internal_os = @import("os/main.zig");
 const fontconfig = @import("fontconfig");
-const glslang = @import("glslang");
+// const glslang = @import("glslang");
 const harfbuzz = @import("harfbuzz");
 const oni = @import("oniguruma");
 const crash = @import("crash/main.zig");
@@ -80,16 +80,11 @@ pub const GlobalState = struct {
                     else => std.valgrind.runningOnValgrind() > 0,
                 }) break :gpa null;
             }
-
-            break :gpa GPA{};
+            break :gpa null;
+            // break :gpa GPA{};
         };
 
-        self.alloc = if (self.gpa) |*value|
-            value.allocator()
-        else if (builtin.link_libc)
-            std.heap.c_allocator
-        else
-            unreachable;
+        self.alloc = std.heap.c_allocator;
 
         // We first try to parse any action that we may be executing.
         self.action = try cli.Action.detectCLI(self.alloc);
@@ -164,7 +159,7 @@ pub const GlobalState = struct {
         try internal_os.ensureLocale(self.alloc);
 
         // Initialize glslang for shader compilation
-        try glslang.init();
+        // try glslang.init();
 
         // Initialize oniguruma for regex
         try oni.init(&.{oni.Encoding.utf8});

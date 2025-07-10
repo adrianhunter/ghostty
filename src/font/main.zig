@@ -30,12 +30,12 @@ pub const Library = library.Library;
 
 // If we're targeting wasm then we export some wasm APIs.
 comptime {
-    if (builtin.target.cpu.arch.isWasm()) {
-        _ = Atlas.Wasm;
-        _ = DeferredFace.Wasm;
-        _ = face.web_canvas.Wasm;
-        _ = shape.web_canvas.Wasm;
-    }
+    // if (builtin.target.cpu.arch.isWasm()) {
+    //     _ = Atlas.Wasm;
+    //     _ = DeferredFace.Wasm;
+    //     _ = face.web_canvas.Wasm;
+    //     _ = shape.web_canvas.Wasm;
+    // }
 }
 
 /// Build options
@@ -84,7 +84,7 @@ pub const Backend = enum {
     ) Backend {
         if (target.cpu.arch == .wasm32) {
             return switch (wasm_target) {
-                .browser => .web_canvas,
+                .browser => .freetype,
             };
         }
 

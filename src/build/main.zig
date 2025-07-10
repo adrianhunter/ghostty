@@ -35,3 +35,5 @@ pub const bash_completions = @import("bash_completions.zig").completions;
 
 // Helpers
 pub const requireZig = @import("zig.zig").requireZig;
+
+pub const GhosttyWasm = @import("GhosttyWasm.zig");

@@ -6,12 +6,13 @@
     .dependencies = .{
         // Zig libs
 
-        .libxev = .{
-            // mitchellh/libxev
-            .url = "https://github.com/mitchellh/libxev/archive/75a10d0fb374e8eb84948dcfc68d865e755e59c2.tar.gz",
-            .hash = "libxev-0.0.0-86vtcyMBEwA-UpcjfOICyI2GYG8o6MiRbinS1_8g1_rw",
-            .lazy = true,
-        },
+        .xev = .{ .path = "./pkg/xev" },
+        // .libxev = .{
+        //     // mitchellh/libxev
+        //     .url = "https://github.com/mitchellh/libxev/archive/75a10d0fb374e8eb84948dcfc68d865e755e59c2.tar.gz",
+        //     .hash = "libxev-0.0.0-86vtcyMBEwA-UpcjfOICyI2GYG8o6MiRbinS1_8g1_rw",
+        //     .lazy = true,
+        // },
         .vaxis = .{
             // rockorager/libvaxis
             .url = "git+https://github.com/rockorager/libvaxis#1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23",
@@ -61,7 +62,7 @@
         },
 
         // C libs
-        .cimgui = .{ .path = "./pkg/cimgui", .lazy = true },
+        // .cimgui = .{ .path = "./pkg/cimgui", .lazy = true },
         .fontconfig = .{ .path = "./pkg/fontconfig", .lazy = true },
         .freetype = .{ .path = "./pkg/freetype", .lazy = true },
         .gtk4_layer_shell = .{ .path = "./pkg/gtk4-layer-shell", .lazy = true },
@@ -71,7 +72,9 @@
         .libpng = .{ .path = "./pkg/libpng", .lazy = true },
         .macos = .{ .path = "./pkg/macos", .lazy = true },
         .oniguruma = .{ .path = "./pkg/oniguruma", .lazy = true },
-        .opengl = .{ .path = "./pkg/opengl", .lazy = true },
+        .opengl = .{
+            .path = "./pkg/opengl",
+        },
         .sentry = .{ .path = "./pkg/sentry", .lazy = true },
         .simdutf = .{ .path = "./pkg/simdutf", .lazy = true },
         .utfcpp = .{ .path = "./pkg/utfcpp", .lazy = true },
@@ -79,7 +82,7 @@
         .zlib = .{ .path = "./pkg/zlib", .lazy = true },
 
         // Shader translation
-        .glslang = .{ .path = "./pkg/glslang", .lazy = true },
+        // .glslang = .{ .path = "./pkg/glslang", .lazy = true },
         .spirv_cross = .{ .path = "./pkg/spirv-cross", .lazy = true },
 
         // Wayland
@@ -115,6 +118,17 @@
             .url = "https://github.com/mbadolato/iTerm2-Color-Schemes/archive/6fa671fdc1daf1fcfa025cb960ffa3e7373a2ed8.tar.gz",
             .hash = "N-V-__8AAGHcWgTaKLjwmFkxToNT4jgz5VXUHR7hz8TQ2_AS",
             .lazy = true,
+        },
+
+        .emsdk = .{ .path = "./pkg/emsdk" },
+
+        .sokol = .{
+            .url = "git+https://github.com/floooh/sokol-zig.git#9c2feccaa577343293e83a8b11b6268586c22487",
+            .hash = "sokol-0.1.0-pb1HK_uSLQDmVa0mXFtgrAVz1wCKkKn4PgammXJXiIui",
+        },
+        .cimgui = .{
+            .url = "git+https://github.com/floooh/dcimgui.git#7d1ea4854bfc33bcb506f74fca8a607e13807515",
+            .hash = "cimgui-0.1.0-44ClkavDjQDUyJUoFZvVBMV2hdBjxn1UVPQVt0sw6_Vz",
         },
     },
 }

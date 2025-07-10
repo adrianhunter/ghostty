@@ -19,6 +19,7 @@ pub inline fn home(buf: []u8) !?[]const u8 {
 
         // iOS doesn't have a user-writable home directory
         .ios => null,
+        .emscripten => null,
 
         else => @compileError("unimplemented"),
     };
@@ -124,6 +125,8 @@ pub fn expandHome(path: []const u8, buf: []u8) ExpandError![]const u8 {
     return switch (builtin.os.tag) {
         .linux, .freebsd, .macos => try expandHomeUnix(path, buf),
         .ios => return path,
+        .emscripten => return path,
+
         else => @compileError("unimplemented"),
     };
 }

@@ -83,10 +83,10 @@ pub const VTEvent = struct {
     /// Returns true if the event passes the given filter.
     pub fn passFilter(
         self: *const VTEvent,
-        filter: *cimgui.c.ImGuiTextFilter,
+        filter: *cimgui.ImGuiTextFilter,
     ) bool {
         // Check our main string
-        if (cimgui.c.ImGuiTextFilter_PassFilter(
+        if (cimgui.ImGuiTextFilter_PassFilter(
             filter,
             self.str.ptr,
             null,
@@ -97,12 +97,12 @@ pub const VTEvent = struct {
         while (it.next()) |entry| {
             var buf: [256]u8 = undefined;
             const key = std.fmt.bufPrintZ(&buf, "{s}", .{entry.key_ptr.*}) catch continue;
-            if (cimgui.c.ImGuiTextFilter_PassFilter(
+            if (cimgui.ImGuiTextFilter_PassFilter(
                 filter,
                 key.ptr,
                 null,
             )) return true;
-            if (cimgui.c.ImGuiTextFilter_PassFilter(
+            if (cimgui.ImGuiTextFilter_PassFilter(
                 filter,
                 entry.value_ptr.ptr,
                 null,
@@ -309,19 +309,19 @@ pub const VTHandler = struct {
 
     /// Exclude certain actions by tag.
     filter_exclude: ActionTagSet = .initMany(&.{.print}),
-    filter_text: *cimgui.c.ImGuiTextFilter,
+    filter_text: *cimgui.ImGuiTextFilter,
 
     const ActionTagSet = std.EnumSet(terminal.Parser.Action.Tag);
 
     pub fn init(surface: *Surface) VTHandler {
         return .{
             .surface = surface,
-            .filter_text = cimgui.c.ImGuiTextFilter_ImGuiTextFilter(""),
+            .filter_text = cimgui.ImGuiTextFilter_ImGuiTextFilter(""),
         };
     }
 
     pub fn deinit(self: *VTHandler) void {
-        cimgui.c.ImGuiTextFilter_destroy(self.filter_text);
+        cimgui.ImGuiTextFilter_destroy(self.filter_text);
     }
 
     /// This is called with every single terminal action.

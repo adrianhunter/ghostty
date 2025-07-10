@@ -45,7 +45,7 @@ pub const Location = enum {
 
                     switch (@as(Error, err)) {
                         error.OutOfMemory => return error.OutOfMemory,
-                        error.BufferTooSmall => return error.OutOfMemory,
+                        error.NoHomeDir => return error.OutOfMemory,
 
                         // Any other error we treat as the XDG directory not
                         // existing. Windows in particularly can return a LOT
